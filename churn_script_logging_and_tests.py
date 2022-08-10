@@ -176,8 +176,14 @@ def test_train_models():
         assert os.path.isfile('./models/rfc_model.pkl')
         assert os.path.isfile('./models/logistic_model.pkl')
         assert os.path.isfile(os.path.join(img_path, 'random_forest.png'))
-        assert os.path.isfile(os.path.join(img_path, 'logistic_regression.png'))
-        assert os.path.isfile(os.path.join(img_path, 'feature_importances.png'))
+        assert os.path.isfile(
+            os.path.join(
+                img_path,
+                'logistic_regression.png'))
+        assert os.path.isfile(
+            os.path.join(
+                img_path,
+                'feature_importances.png'))
         assert os.path.isfile(os.path.join(img_path, 'roc_curves.png'))
     except AssertionError as err:
         logging.error(

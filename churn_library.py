@@ -318,51 +318,9 @@ if __name__ == "__main__":
         'Card_Category'
     ]
 
-    # quant_columns = [
-    #     'Customer_Age',
-    #     'Dependent_count',
-    #     'Months_on_book',
-    #     'Total_Relationship_Count',
-    #     'Months_Inactive_12_mon',
-    #     'Contacts_Count_12_mon',
-    #     'Credit_Limit',
-    #     'Total_Revolving_Bal',
-    #     'Avg_Open_To_Buy',
-    #     'Total_Amt_Chng_Q4_Q1',
-    #     'Total_Trans_Amt',
-    #     'Total_Trans_Ct',
-    #     'Total_Ct_Chng_Q4_Q1',
-    #     'Avg_Utilization_Ratio'
-    # ]
-
     df_encoded = encoder_helper(df_bank, cat_columns, CHURN_COL)
-
-    # cat_encoded_colnums = [x + '_' + CHURN_COL for x in cat_columns]
-
-    # keep_cols = quant_columns + cat_encoded_colnums
-
-    # for c in keep_cols:
-    #     print(c)
 
     X_train, X_test, y_train, y_test = perform_feature_engineering(
         df_encoded, CHURN_COL)
 
     train_models(X_train, X_test, y_train, y_test)
-
-    # rfc_model = joblib.load('./models/rfc_model.pkl')
-    # lr_model = joblib.load('./models/logistic_model.pkl')
-
-    # y_train_preds_rf = rfc_model.predict(X_train)
-    # y_test_preds_rf = rfc_model.predict(X_test)
-
-    # y_train_preds_lr = lr_model.predict(X_train)
-    # y_test_preds_lr = lr_model.predict(X_test)
-
-    # classification_report_image(y_train,
-    #                             y_test,
-    #                             y_train_preds_lr,
-    #                             y_train_preds_rf,
-    #                             y_test_preds_lr,
-    #                             y_test_preds_rf)
-
-    # feature_importance_plot(rfc_model, X_train, r'./images/results/')
