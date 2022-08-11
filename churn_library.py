@@ -174,11 +174,14 @@ def classification_report_image(y_train,
     plt.text(0.01, 1.25, str('Random Forest Train'), {
              'fontsize': 10}, fontproperties='monospace')
     plt.text(0.01, 0.05, str(classification_report(y_test, y_test_preds_rf)), {
-             'fontsize': 10}, fontproperties='monospace')  # approach improved by OP -> monospace!
+             'fontsize': 10}, fontproperties='monospace')
     plt.text(0.01, 0.6, str('Random Forest Test'), {
              'fontsize': 10}, fontproperties='monospace')
-    plt.text(0.01, 0.7, str(classification_report(y_train, y_train_preds_rf)), {
-             'fontsize': 10}, fontproperties='monospace')  # approach improved by OP -> monospace!
+    plt.text(
+        0.01, 0.7, str(
+            classification_report(
+                y_train, y_train_preds_rf)), {
+            'fontsize': 10}, fontproperties='monospace')
     plt.axis('off')
     plt.savefig(os.path.join(results_img_path, 'random_forest.png'))
 
@@ -186,12 +189,15 @@ def classification_report_image(y_train,
     # plt.rc('figure', figsize=(5, 5))
     plt.text(0.01, 1.25, str('Logistic Regression Train'),
              {'fontsize': 10}, fontproperties='monospace')
-    plt.text(0.01, 0.05, str(classification_report(y_train, y_train_preds_lr)), {
-             'fontsize': 10}, fontproperties='monospace')  # approach improved by OP -> monospace!
+    plt.text(
+        0.01, 0.05, str(
+            classification_report(
+                y_train, y_train_preds_lr)), {
+            'fontsize': 10}, fontproperties='monospace')
     plt.text(0.01, 0.6, str('Logistic Regression Test'), {
              'fontsize': 10}, fontproperties='monospace')
     plt.text(0.01, 0.7, str(classification_report(y_test, y_test_preds_lr)), {
-             'fontsize': 10}, fontproperties='monospace')  # approach improved by OP -> monospace!
+             'fontsize': 10}, fontproperties='monospace')
     plt.axis('off')
     plt.savefig(os.path.join(results_img_path, 'logistic_regression.png'))
 
