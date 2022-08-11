@@ -17,10 +17,15 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-sns.set()
 
-
-os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+from constants import (
+    EDA_IMG_PATH,
+    CLASSIFICATION_REPORT_PATH,
+    DATA_PATH,
+    CHURN_COL,
+    cat_columns,
+    feature_cols
+)
 
 
 def import_data(pth):
@@ -45,25 +50,25 @@ def perform_eda(df):
     output:
             None
     '''
-    eda_img_path = r'./images/eda/'
+    # EDA_IMG_PATH = r'./images/eda/'
 
     plt.figure(figsize=(20, 10))
     churn_hist = df['Churn'].hist()
-    churn_hist.get_figure().savefig(os.path.join(eda_img_path, 'Churn.png'))
+    churn_hist.get_figure().savefig(os.path.join(EDA_IMG_PATH, 'Churn.png'))
 
     plt.figure(figsize=(20, 10))
     cust_age_hist = df['Customer_Age'].hist()
-    cust_age_hist.get_figure().savefig(os.path.join(eda_img_path, 'Customer_Age.png'))
+    cust_age_hist.get_figure().savefig(os.path.join(EDA_IMG_PATH, 'Customer_Age.png'))
 
     plt.figure(figsize=(20, 10))
     martail_stat = df.Marital_Status.value_counts('normalize').plot(kind='bar')
-    martail_stat.get_figure().savefig(os.path.join(eda_img_path, 'Marital_Status.png'))
+    martail_stat.get_figure().savefig(os.path.join(EDA_IMG_PATH, 'Marital_Status.png'))
 
     plt.figure(figsize=(20, 10))
     total_trans_plot = sns.histplot(
         df['Total_Trans_Ct'], stat='density', kde=True)
     fig = total_trans_plot.get_figure()
-    fig.savefig(os.path.join(eda_img_path, 'Total_Trans_Ct.png'))
+    fig.savefig(os.path.join(EDA_IMG_PATH, 'Total_Trans_Ct.png'))
 
     plt.figure(figsize=(20, 10))
     dark2_r_plot = sns.heatmap(
@@ -71,7 +76,7 @@ def perform_eda(df):
         annot=False,
         cmap='Dark2_r',
         linewidths=2)
-    dark2_r_plot.get_figure().savefig(os.path.join(eda_img_path, 'Dark2_r.png'))
+    dark2_r_plot.get_figure().savefig(os.path.join(EDA_IMG_PATH, 'Dark2_r.png'))
 
 
 def encoder_helper(df, category_lst, response):
@@ -117,28 +122,8 @@ def perform_feature_engineering(df, response):
     '''
 
     X = pd.DataFrame()
-    keep_cols = [
-        'Customer_Age',
-        'Dependent_count',
-        'Months_on_book',
-        'Total_Relationship_Count',
-        'Months_Inactive_12_mon',
-        'Contacts_Count_12_mon',
-        'Credit_Limit',
-        'Total_Revolving_Bal',
-        'Avg_Open_To_Buy',
-        'Total_Amt_Chng_Q4_Q1',
-        'Total_Trans_Amt',
-        'Total_Trans_Ct',
-        'Total_Ct_Chng_Q4_Q1',
-        'Avg_Utilization_Ratio',
-        'Gender_Churn',
-        'Education_Level_Churn',
-        'Marital_Status_Churn',
-        'Income_Category_Churn',
-        'Card_Category_Churn']
 
-    X[keep_cols] = df[keep_cols]
+    X[feature_cols] = df[feature_cols]
     y = df[response]
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -166,7 +151,6 @@ def classification_report_image(y_train,
     output:
              None
     '''
-    results_img_path = './images/results/'
 
     plt.figure()
     # plt.rc('figure', figsize=(5, 5))
@@ -183,7 +167,7 @@ def classification_report_image(y_train,
                 y_train, y_train_preds_rf)), {
             'fontsize': 10}, fontproperties='monospace')
     plt.axis('off')
-    plt.savefig(os.path.join(results_img_path, 'random_forest.png'))
+    plt.savefig(os.path.join(CLASSIFICATION_REPORT_PATH, 'random_forest.png'))
 
     plt.figure()
     # plt.rc('figure', figsize=(5, 5))
@@ -199,7 +183,10 @@ def classification_report_image(y_train,
     plt.text(0.01, 0.7, str(classification_report(y_test, y_test_preds_lr)), {
              'fontsize': 10}, fontproperties='monospace')
     plt.axis('off')
-    plt.savefig(os.path.join(results_img_path, 'logistic_regression.png'))
+    plt.savefig(
+        os.path.join(
+            CLASSIFICATION_REPORT_PATH,
+            'logistic_regression.png'))
 
 
 def feature_importance_plot(model, X_data, output_pth):
@@ -284,45 +271,33 @@ def train_models(X_train, X_test, y_train, y_test):
                                 y_test_preds_lr,
                                 y_test_preds_rf)
 
-    results_img_path = './images/results/'
     feature_importance_plot(
         cv_rfc.best_estimator_,
         X_train,
-        results_img_path)
+        CLASSIFICATION_REPORT_PATH)
 
     # roc curve plot
     lrc_plot = plot_roc_curve(lrc, X_test, y_test)
 
     plt.figure(figsize=(15, 8))
     ax = plt.gca()
-    rfc_disp = plot_roc_curve(
+    plot_roc_curve(
         cv_rfc.best_estimator_,
         X_test,
         y_test,
         ax=ax,
         alpha=0.8)
     lrc_plot.plot(ax=ax, alpha=0.8)
-    plt.savefig(os.path.join(results_img_path, 'roc_curves.png'))
+    plt.savefig(os.path.join(CLASSIFICATION_REPORT_PATH, 'roc_curves.png'))
 
 
 if __name__ == "__main__":
-    DATA_PATH = r"./data/bank_data.csv"
     df_bank = import_data(DATA_PATH)
-
-    CHURN_COL = 'Churn'
 
     df_bank[CHURN_COL] = df_bank['Attrition_Flag'].apply(
         lambda val: 0 if val == "Existing Customer" else 1)
 
     perform_eda(df_bank)
-
-    cat_columns = [
-        'Gender',
-        'Education_Level',
-        'Marital_Status',
-        'Income_Category',
-        'Card_Category'
-    ]
 
     df_encoded = encoder_helper(df_bank, cat_columns, CHURN_COL)
 
