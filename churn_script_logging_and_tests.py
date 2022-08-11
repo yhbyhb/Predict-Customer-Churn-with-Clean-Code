@@ -17,7 +17,7 @@ logging.basicConfig(
 
 def test_import():
     '''
-    test data import - this example is completed for you to assist with the other test functions
+    test data import
     '''
     try:
         df = cls.import_data("./data/bank_data.csv")
