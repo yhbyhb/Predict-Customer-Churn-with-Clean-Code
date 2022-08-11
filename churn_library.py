@@ -53,8 +53,6 @@ def perform_eda(df):
     output:
             None
     '''
-    # EDA_IMG_PATH = r'./images/eda/'
-
     plt.figure(figsize=(20, 10))
     churn_hist = df['Churn'].hist()
     churn_hist.get_figure().savefig(os.path.join(EDA_IMG_PATH, 'Churn.png'))
@@ -156,8 +154,6 @@ def classification_report_image(y_train,
     '''
 
     plt.figure()
-    # plt.rc('figure', figsize=(5, 5))
-    # plt.text(0.01, 0.05, str(model.summary()), {'fontsize': 12}) old approach
     plt.text(0.01, 1.25, str('Random Forest Train'), {
              'fontsize': 10}, fontproperties='monospace')
     plt.text(0.01, 0.05, str(classification_report(y_test, y_test_preds_rf)), {
@@ -173,7 +169,6 @@ def classification_report_image(y_train,
     plt.savefig(os.path.join(CLASSIFICATION_REPORT_PATH, 'random_forest.png'))
 
     plt.figure()
-    # plt.rc('figure', figsize=(5, 5))
     plt.text(0.01, 1.25, str('Logistic Regression Train'),
              {'fontsize': 10}, fontproperties='monospace')
     plt.text(
