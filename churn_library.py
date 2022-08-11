@@ -28,6 +28,9 @@ from constants import (
 )
 
 
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+
+
 def import_data(pth):
     '''
     returns dataframe for the csv found at pth
